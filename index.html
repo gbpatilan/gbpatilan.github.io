@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerald Bautista Patilan — Full Stack Developer</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzA4MDgwOCIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSItMC41Ij5HQlA8L3RleHQ+Cjwvc3ZnPg==">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080808;
+    --bg2: #0f0f0f;
+    --bg3: #161616;
+    --line: rgba(255,255,255,0.06);
+    --line2: rgba(255,255,255,0.12);
+    --text: #f2f2f2;
+    --muted: #666666;
+    --accent: #ffffff;
+    --accent2: #aaaaaa;
+    --card-bg: #0d0d0d;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 3rem; border-bottom: 1px solid var(--line); background: rgba(8,8,8,0.92); backdrop-filter: blur(12px); }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--accent); letter-spacing: -0.02em; cursor: pointer; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; cursor: pointer; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.06em; background: var(--accent); color: #080808; padding: 0.5rem 1.2rem; border-radius: 2px; font-weight: 400; transition: opacity 0.2s; cursor: pointer; border: none; }
+  .nav-cta:hover { opacity: 0.75; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+  .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--text); transition: all 0.3s; }
+  .mobile-menu { display: none; position: fixed; top: 57px; left: 0; right: 0; z-index: 99; background: rgba(8,8,8,0.97); border-bottom: 1px solid var(--line); padding: 1.5rem 2rem; flex-direction: column; gap: 1.4rem; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { font-family: 'DM Mono', monospace; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+  .mobile-menu a:hover { color: var(--text); }
+
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 6rem 3rem 4rem; position: relative; overflow: hidden; }
+  .hero-grid-bg { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%); }
+  .hero-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+  .hero-label::before { content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--accent); }
+  .hero-name { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 6.5rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
+  .hero-name span { color: var(--accent); }
+  .hero-sub { font-size: 1.1rem; color: var(--muted); max-width: 480px; line-height: 1.7; margin-bottom: 3rem; font-weight: 300; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.06em; background: var(--accent); color: #080808; padding: 0.8rem 2rem; border-radius: 2px; text-decoration: none; transition: opacity 0.2s; border: none; cursor: pointer; }
+  .btn-primary:hover { opacity: 0.75; }
+  .btn-outline { font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.06em; background: transparent; color: var(--text); padding: 0.8rem 2rem; border-radius: 2px; text-decoration: none; border: 1px solid var(--line2); transition: border-color 0.2s, color 0.2s; cursor: pointer; }
+  .btn-outline:hover { border-color: var(--text); }
+  .hero-status { position: absolute; right: 3rem; bottom: 4rem; display: flex; align-items: center; gap: 0.6rem; font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+  section { padding: 6rem 3rem; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.8rem; }
+  .section-label::before { content: ''; display: inline-block; width: 1.5rem; height: 1px; background: var(--accent); }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 3rem; line-height: 1.1; }
+  .divider { border: none; border-top: 1px solid var(--line); margin: 0; }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-text p { color: var(--muted); font-weight: 300; margin-bottom: 1.2rem; font-size: 1.05rem; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-stats { display: flex; flex-direction: column; gap: 1px; }
+  .stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 1.2rem 0; border-bottom: 1px solid var(--line); }
+  .stat-row:first-child { border-top: 1px solid var(--line); }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 700; color: var(--accent); letter-spacing: -0.03em; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.05em; text-align: right; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; border: 1px solid var(--line); margin-top: -1px; }
+  .skill-card { background: var(--card-bg); padding: 2rem; border: 1px solid var(--line); transition: background 0.2s; }
+  .skill-card:hover { background: var(--bg3); }
+  .skill-icon { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--accent2); margin-bottom: 1rem; }
+  .skill-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.06em; padding: 0.25rem 0.7rem; border-radius: 1px; border: 1px solid var(--line2); color: var(--muted); }
+  .tag.accent { border-color: rgba(255,255,255,0.35); color: var(--accent); }
+
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+  .project-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; transition: border-color 0.25s, transform 0.25s; }
+  .project-card:hover { border-color: var(--line2); transform: translateY(-3px); }
+  .project-thumb { height: 180px; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; letter-spacing: -0.05em; }
+  .project-body { padding: 1.5rem; }
+  .project-meta { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.6rem; text-transform: uppercase; }
+  .project-body h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .project-body p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem; font-weight: 300; }
+  .project-links { display: flex; gap: 1rem; }
+  .project-links a { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; color: var(--accent2); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .project-links a:hover { color: var(--text); }
+
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item { display: grid; grid-template-columns: 140px 1px 1fr; gap: 0 2rem; padding-bottom: 3rem; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-date { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-align: right; padding-top: 0.15rem; line-height: 1.4; }
+  .timeline-line { display: flex; flex-direction: column; align-items: center; }
+  .timeline-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; z-index: 1; margin-top: 0.2rem; }
+  .timeline-vert { width: 1px; flex: 1; background: var(--line2); margin-top: 6px; }
+  .timeline-item:last-child .timeline-vert { display: none; }
+  .timeline-content h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .timeline-company { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent2); letter-spacing: 0.06em; margin-bottom: 0.7rem; }
+  .timeline-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-info p { color: var(--muted); font-weight: 300; margin-bottom: 2rem; font-size: 0.95rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--text); padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: 2px; transition: border-color 0.2s; }
+  .contact-link:hover { border-color: var(--accent); }
+  .contact-link-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.15rem; }
+  .contact-link-val { font-size: 0.9rem; }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-form > div { display: flex; flex-direction: column; gap: 0.3rem; width: 100%; }
+  .contact-form input, .contact-form textarea { width: 100%; padding: 0.8rem 1rem; background: var(--card-bg); border: 1px solid var(--line); border-radius: 2px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+  .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); }
+  .contact-form input.error, .contact-form textarea.error { border-color: #f87171; }
+  .contact-form textarea { min-height: 120px; resize: vertical; width: 100%; }
+  .field-error { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #f87171; letter-spacing: 0.05em; display: none; }
+  .field-error.visible { display: block; }
+
+  footer { padding: 2.5rem 3rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-copy { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; }
+  .footer-socials { display: flex; gap: 1.5rem; }
+  .footer-socials a { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; text-transform: uppercase; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-socials a:hover { color: var(--accent); }
+
+  #scroll-top { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; background: transparent; border: none; color: #ffffff; font-size: 1.5rem; font-weight: 700; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.3s, color 0.2s; line-height: 1; padding: 0; }
+  #scroll-top.visible { opacity: 1; pointer-events: auto; }
+  #scroll-top:hover { color: #aaaaaa; }
+
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    section { padding: 5rem 2rem; }
+    .hero { padding: 6rem 2rem 4rem; }
+    .skills-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+    .projects-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .contact-wrap { gap: 2.5rem; }
+    footer { padding: 2rem; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.2rem; }
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    section { padding: 3.5rem 1.2rem; }
+    .hero { padding: 5rem 1.2rem 3rem; min-height: 100svh; }
+    .hero-name { font-size: clamp(2.5rem, 12vw, 4rem); }
+    .hero-sub { font-size: 0.95rem; margin-bottom: 2rem; }
+    .hero-actions { flex-direction: column; gap: 0.8rem; }
+    .hero-actions .btn-primary, .hero-actions .btn-outline { text-align: center; width: 100%; padding: 0.9rem 1.5rem; }
+    .hero-status { display: none; }
+    .section-title { font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: 2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .stat-num { font-size: 1.8rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .skill-card { padding: 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-thumb { height: 140px; font-size: 2.2rem; }
+    .timeline-item { grid-template-columns: 75px 1px 1fr; gap: 0 0.8rem; padding-bottom: 2rem; }
+    .timeline-date { font-size: 0.62rem; }
+    .timeline-content h3 { font-size: 0.9rem; }
+    .timeline-company { font-size: 0.62rem; }
+    .timeline-desc { font-size: 0.82rem; }
+    .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-form input, .contact-form textarea { font-size: 0.95rem; }
+    footer { padding: 1.5rem 1.2rem; flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+    .footer-socials { gap: 1.2rem; }
+    #scroll-top { bottom: 1.2rem; right: 1.2rem; font-size: 1.2rem; }
+  }
+  @media (max-width: 400px) {
+    .hero-name { font-size: clamp(2rem, 14vw, 3rem); }
+    .timeline-item { grid-template-columns: 65px 1px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo" onclick="scrollToSection('home')">GBP</span>
+  <ul class="nav-links">
+    <li><a onclick="scrollToSection('about')">About</a></li>
+    <li><a onclick="scrollToSection('skills')">Skills</a></li>
+    <li><a onclick="scrollToSection('projects')">Projects</a></li>
+    <li><a onclick="scrollToSection('experience')">Experience</a></li>
+    <li><a onclick="scrollToSection('contact')">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="scrollToSection('contact')">Hire Me</button>
+  <button class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a onclick="scrollToSection('about');closeMenu()">About</a>
+  <a onclick="scrollToSection('skills');closeMenu()">Skills</a>
+  <a onclick="scrollToSection('projects');closeMenu()">Projects</a>
+  <a onclick="scrollToSection('experience');closeMenu()">Experience</a>
+  <a onclick="scrollToSection('contact');closeMenu()">Contact</a>
+</div>
+
+<section class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-label">Full Stack Web Developer</div>
+  <h1 class="hero-name">Gerald<br><span>Patilan</span></h1>
+  <p class="hero-sub">I build fast, scalable, and beautiful web applications — from pixel-perfect frontends to robust backend systems.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="scrollToSection('projects')">View Projects</button>
+    <button class="btn-outline" onclick="scrollToSection('contact')">Get in Touch</button>
+  </div>
+  <div class="hero-status"><span class="status-dot"></span>Available for work</div>
+</section>
+<hr class="divider">
+
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div>
+      <h2 class="section-title">Crafting digital<br>experiences.</h2>
+      <div class="about-text">
+        <p>I'm <strong>Gerald Bautista Patilan</strong>, a Full Stack Web Developer based in the Philippines with a passion for building clean, functional, and user-focused web applications.</p>
+        <p>I work across the entire stack — designing interfaces, engineering APIs, and deploying production-ready systems. I love solving complex problems with elegant solutions.</p>
+        <p>When I'm not coding, I'm exploring new frameworks, experimenting with side projects, or sharpening my skills on the latest web technologies.</p>
+      </div>
+    </div>
+    <div class="about-stats">
+      <div class="stat-row"><span class="stat-num" id="stat-projects">0</span><span class="stat-label">Projects<br>Completed</span></div>
+      <div class="stat-row"><span class="stat-num">4+</span><span class="stat-label">Years of<br>Experience</span></div>
+      <div class="stat-row"><span class="stat-num">10+</span><span class="stat-label">Technologies<br>Mastered</span></div>
+      <div class="stat-row"><span class="stat-num">∞</span><span class="stat-label">Coffee<br>Consumed</span></div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<section id="skills">
+  <div class="section-label">Skills</div>
+  <h2 class="section-title">Tech stack.</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-icon">[01] — Frontend</div>
+      <h3>Frontend Development</h3>
+      <div class="skill-tags">
+        <span class="tag accent">React</span><span class="tag accent">Next.js</span><span class="tag accent">HTML5</span><span class="tag accent">JavaScript</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">[02] — Backend</div>
+      <h3>Backend Development</h3>
+      <div class="skill-tags">
+        <span class="tag accent">Node.js</span><span class="tag accent">PHP</span><span class="tag accent">Laravel</span><span class="tag accent">REST APIs</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">[03] — Database</div>
+      <h3>Database & Storage</h3>
+      <div class="skill-tags">
+        <span class="tag accent">MySQL</span><span class="tag accent">PostgreSQL</span><span class="tag accent">MongoDB</span><span class="tag accent">Firebase</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">[04] — DevOps</div>
+      <h3>DevOps & Deployment</h3>
+      <div class="skill-tags">
+        <span class="tag accent">Git</span><span class="tag accent">GitHub</span><span class="tag accent">Docker</span><span class="tag accent">Linux</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">[05] — QA & Testing</div>
+      <h3>Quality Assurance</h3>
+      <div class="skill-tags">
+        <span class="tag accent">Test Planning</span><span class="tag accent">Test Execution</span><span class="tag accent">Bug Tracking</span><span class="tag accent">Scrum</span><span class="tag accent">Agile</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">[06] — Tools</div>
+      <h3>Tools & Workflow</h3>
+      <div class="skill-tags">
+        <span class="tag accent">VS Code</span><span class="tag accent">Figma</span><span class="tag accent">Canva</span><span class="tag accent">Postman</span><span class="tag accent">Jira</span><span class="tag accent">Freshdesk</span>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<section id="projects">
+  <div class="section-label">Work</div>
+  <h2 class="section-title">Projects.</h2>
+  <div class="projects-grid">
+
+    <!-- PROJECT 1 -->
+    <div class="project-card">
+      <div class="project-thumb" style="background:#0d1a2e;color:#60a5fa;">SMIS</div>
+      <div class="project-body">
+        <div class="project-meta">VB.NET · MySQL</div>
+        <h3>Student Management Information System</h3>
+        <p>A desktop-based system for managing student records, enrollment, grades, and academic information for educational institutions.</p>
+        <div class="project-links">
+          <!-- <a href="https://your-demo-link.com" target="_blank">Live Demo →</a> -->
+          <!-- <a href="https://github.com/gbpatilan/smis" target="_blank">GitHub →</a> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="project-card">
+      <div class="project-thumb" style="background:#1a0d2e;color:#c084fc;">VNPH</div>
+      <div class="project-body">
+        <div class="project-meta">React · Node.js · MySQL</div>
+        <h3>Villa Noche Pensione House</h3>
+        <p>A hotel booking website where guests can browse available rooms, check availability, and reserve their stay online.</p>
+        <div class="project-links">
+          <!-- <a href="https://your-demo-link.com" target="_blank">Live Demo →</a> -->
+          <!-- <a href="https://github.com/gbpatilan/villa-noche" target="_blank">GitHub →</a> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="project-card">
+      <div class="project-thumb" style="background:#0d2010;color:#4ade80;">BIMS</div>
+      <div class="project-body">
+        <div class="project-meta">HTML · CSS · JavaScript · Java · Spring Boot · MySQL</div>
+        <h3>Barangay Information Management System</h3>
+        <p>A capstone project — a full-stack web application for managing barangay resident records, documents, and services. Built with a Vanilla JS frontend and a Java Spring Boot REST API backend secured with JWT authentication.</p>
+        <div class="project-links">
+          <!-- <a href="https://your-demo-link.com" target="_blank">Live Demo →</a> -->
+          <!-- <a href="https://github.com/gbpatilan/bims" target="_blank">GitHub →</a> -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<hr class="divider">
+
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Work history.</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">Sep 2025 — Present</div>
+      <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-vert"></div></div>
+      <div class="timeline-content">
+        <h3>Full Stack Developer</h3>
+        <div class="timeline-company">// CareTech Health · Full-time · Makati City, Hybrid</div>
+        <p class="timeline-desc">Build and maintain healthcare applications including the CareSpan Integrated Platform — covering Outpatient, Inpatient, HIS, and ERP systems. Design responsive UIs with JavaScript and React.js, and develop backend services using PHP, CodeIgniter, and Node.js.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Jan 2025 — Jun 2025</div>
+      <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-vert"></div></div>
+      <div class="timeline-content">
+        <h3>Quality Assurance Tester</h3>
+        <div class="timeline-company">// CareTech Health · Contract · Makati City, Hybrid</div>
+        <p class="timeline-desc">Led the QA team for the Konsulta Management System. Defined test strategies, developed comprehensive test plans, and oversaw execution to support the PhilHealth KonSulTa Program implementation.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Jul 2024 — Jul 2025</div>
+      <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-vert"></div></div>
+      <div class="timeline-content">
+        <h3>Associate — CareTech Group</h3>
+        <div class="timeline-company">// CareTech Health · Contract · Makati City, Hybrid</div>
+        <p class="timeline-desc">Served as SME for the CareSpan Integrated Platform, specializing in PhilHealth YAKAP and eClaims packages (TB-DOTS, Animal Bite, HIV/AIDS, Malaria). Managed DOH-FHSIS reporting and health data compliance.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Apr 2023 — Jul 2024</div>
+      <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-vert"></div></div>
+      <div class="timeline-content">
+        <h3>Financial Systems Analyst</h3>
+        <div class="timeline-company">// Philippine Health Insurance Corporation · Contract · Pasig City, On-site</div>
+        <p class="timeline-desc">Provided financial analysis and system support at PhilHealth. Contributed to the SHF-PCPN IT System/Web Portal and resolved financial discrepancies while optimizing reporting processes.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Oct 2022 — Apr 2023</div>
+      <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-vert"></div></div>
+      <div class="timeline-content">
+        <h3>Customer Service Representative II</h3>
+        <div class="timeline-company">// Foundever · Contract · Cebu, On-site</div>
+        <p class="timeline-desc">Supported U.S.-based healthcare insurance accounts (UnitedHealthcare and Cigna). Handled claims and billing inquiries using EDI-based workflows and assisted beneficiaries with coverage verification.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Oct 2021 — Oct 2022</div>
+      <div class="timeline-line"><div class="timeline-dot"></div><div class="timeline-vert"></div></div>
+      <div class="timeline-content">
+        <h3>Sales & Technical Support Representative</h3>
+        <div class="timeline-company">// G2 Software Solutions · Part-time · Pagadian, Hybrid</div>
+        <p class="timeline-desc">Cultivated client relationships with LGUs in Leyte, conducted IT needs assessments, and delivered tailored software recommendations. Collaborated with developers to streamline product development.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="divider">
+
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h2 class="section-title">Let's build<br>something.</h2>
+      <p>Have a project in mind? Looking for a developer to join your team? I'd love to hear from you.</p>
+      <div class="contact-links">
+        <a href="mailto:gbpatilan@gmail.com" class="contact-link">
+          <div><span class="contact-link-label">Email</span><span class="contact-link-val">gbpatilan@gmail.com</span></div>
+        </a>
+        <a href="https://github.com/gbpatilan" target="_blank" class="contact-link">
+          <div><span class="contact-link-label">GitHub</span><span class="contact-link-val">github.com/gbpatilan</span></div>
+        </a>
+        <a href="https://www.linkedin.com/in/gerald-b-patilan/" target="_blank" class="contact-link">
+          <div><span class="contact-link-label">LinkedIn</span><span class="contact-link-val">linkedin.com/in/gerald-b-patilan</span></div>
+        </a>
+      </div>
+    </div>
+    <div>
+      <form class="contact-form" id="contact-form" novalidate>
+        <div>
+          <input type="text" id="f-name" name="name" placeholder="Your Name">
+          <span class="field-error" id="err-name">Please enter your name.</span>
+        </div>
+        <div>
+          <input type="email" id="f-email" name="email" placeholder="Your Email">
+          <span class="field-error" id="err-email">Please enter a valid email address.</span>
+        </div>
+        <div>
+          <input type="text" id="f-subject" name="subject" placeholder="Subject">
+          <span class="field-error" id="err-subject">Please enter a subject.</span>
+        </div>
+        <div>
+          <textarea id="f-message" name="message" placeholder="Tell me about your project..."></textarea>
+          <span class="field-error" id="err-message">Please enter your message.</span>
+        </div>
+        <button type="submit" class="btn-primary" style="align-self:flex-start;" id="submit-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2026 Gerald Bautista Patilan — Full Stack Web Developer</span>
+  <div class="footer-socials">
+    <a href="https://github.com/gbpatilan" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/gerald-b-patilan/" target="_blank">LinkedIn</a>
+    <a href="mailto:gbpatilan@gmail.com">Email</a>
+  </div>
+</footer>
+
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">&#8593;</button>
+
+<script>
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.pageYOffset - 65;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+  function closeMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
+
+  // Contact form — validation + Formspree + anti-spam cooldown
+  let lastSubmitTime = 0;
+  const SUBMIT_COOLDOWN = 60000; // 60 seconds between submissions
+
+  // --- Format rules ---
+  // Name & Subject: letters, numbers, spaces, hyphens, apostrophes, periods only
+  const NAME_REGEX = /^[a-zA-Z\s'\-\.]+$/;
+  const SUBJECT_REGEX = /^[a-zA-Z0-9\s'\-\.\,\!\?]+$/;
+  // Message: letters, numbers, common punctuation — blocks HTML tags, SQL, scripts
+  const MSG_REGEX = /^[^<>{};`\|]+$/;
+  // Blocked keywords (SQL injection / script injection)
+  const BLOCKED = /(SELECT|INSERT|DROP|DELETE|UPDATE|UNION|EXEC|<script|javascript:|onclick|onerror)/i;
+
+  function isValidEmail(email) {
+    return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email.trim());
+  }
+
+  function sanitize(val) {
+    return val.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function clearErrors() {
+    ['f-name','f-email','f-subject','f-message'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('error');
+    });
+    ['err-name','err-email','err-subject','err-message'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('visible');
+    });
+  }
+
+  function showError(fieldId, errId, msg) {
+    const field = document.getElementById(fieldId);
+    const errEl = document.getElementById(errId);
+    field.classList.add('error');
+    errEl.textContent = msg;
+    errEl.classList.add('visible');
+  }
+
+  function validateForm() {
+    clearErrors();
+    let valid = true;
+    const name    = document.getElementById('f-name').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const subject = document.getElementById('f-subject').value.trim();
+    const message = document.getElementById('f-message').value.trim();
+
+    // Name
+    if (!name) {
+      showError('f-name', 'err-name', 'Please enter your name.'); valid = false;
+    } else if (name.length < 2) {
+      showError('f-name', 'err-name', 'Name must be at least 2 characters.'); valid = false;
+    } else if (name.length > 80) {
+      showError('f-name', 'err-name', 'Name is too long (max 80 characters).'); valid = false;
+    } else if (!NAME_REGEX.test(name)) {
+      showError('f-name', 'err-name', 'Name can only contain letters, spaces, hyphens, or apostrophes.'); valid = false;
+    } else if (BLOCKED.test(name)) {
+      showError('f-name', 'err-name', 'Invalid characters detected.'); valid = false;
+    }
+
+    // Email
+    if (!email) {
+      showError('f-email', 'err-email', 'Please enter your email address.'); valid = false;
+    } else if (!isValidEmail(email)) {
+      showError('f-email', 'err-email', 'Please enter a valid email (e.g. name@email.com).'); valid = false;
+    } else if (email.length > 120) {
+      showError('f-email', 'err-email', 'Email address is too long.'); valid = false;
+    }
+
+    // Subject
+    if (!subject) {
+      showError('f-subject', 'err-subject', 'Please enter a subject.'); valid = false;
+    } else if (subject.length < 3) {
+      showError('f-subject', 'err-subject', 'Subject must be at least 3 characters.'); valid = false;
+    } else if (subject.length > 100) {
+      showError('f-subject', 'err-subject', 'Subject is too long (max 100 characters).'); valid = false;
+    } else if (!SUBJECT_REGEX.test(subject)) {
+      showError('f-subject', 'err-subject', 'Subject contains invalid characters.'); valid = false;
+    } else if (BLOCKED.test(subject)) {
+      showError('f-subject', 'err-subject', 'Invalid characters detected.'); valid = false;
+    }
+
+    // Message
+    if (!message) {
+      showError('f-message', 'err-message', 'Please enter your message.'); valid = false;
+    } else if (message.length < 10) {
+      showError('f-message', 'err-message', 'Message must be at least 10 characters.'); valid = false;
+    } else if (message.length > 2000) {
+      showError('f-message', 'err-message', 'Message is too long (max 2000 characters).'); valid = false;
+    } else if (!MSG_REGEX.test(message)) {
+      showError('f-message', 'err-message', 'Message contains invalid characters like <, >, { or }.'); valid = false;
+    } else if (BLOCKED.test(message)) {
+      showError('f-message', 'err-message', 'Invalid content detected in your message.'); valid = false;
+    }
+
+    return valid;
+  }
+
+  // Clear error on input
+  ['f-name','f-email','f-subject','f-message'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', function() {
+      this.classList.remove('error');
+      const errId = 'err-' + id.replace('f-', '');
+      const errEl = document.getElementById(errId);
+      if (errEl) errEl.classList.remove('visible');
+    });
+  });
+
+  document.getElementById('contact-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+
+    // Validate first
+    if (!validateForm()) return;
+
+    // Anti-spam cooldown
+    const now = Date.now();
+    if (now - lastSubmitTime < SUBMIT_COOLDOWN) {
+      const remaining = Math.ceil((SUBMIT_COOLDOWN - (now - lastSubmitTime)) / 1000);
+      btn.textContent = `Please wait ${remaining}s`;
+      btn.style.background = '#555';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.style.background = '';
+        btn.style.color = '';
+      }, (SUBMIT_COOLDOWN - (now - lastSubmitTime)));
+      return;
+    }
+
+    // Submit
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const res = await fetch('https://formspree.io/f/xqenqljg', {
+        method: 'POST',
+        body: new FormData(this),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        lastSubmitTime = Date.now();
+        btn.textContent = 'Message Sent ✓';
+        btn.style.background = '#fff';
+        btn.style.color = '#080808';
+        this.reset();
+        clearErrors();
+        // Reset button after 5 seconds
+        setTimeout(() => {
+          btn.textContent = 'Send Message';
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.disabled = false;
+        }, 5000);
+      } else {
+        btn.textContent = 'Failed. Try again.';
+        btn.style.background = '#f87171';
+        btn.style.color = '#fff';
+        setTimeout(() => {
+          btn.textContent = 'Send Message';
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.disabled = false;
+        }, 3000);
+      }
+    } catch(err) {
+      btn.textContent = 'Failed. Try again.';
+      btn.style.background = '#f87171';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+      }, 3000);
+    }
+  });
+
+  // Animate project counter
+  const statEl = document.getElementById('stat-projects');
+  const projectCount = document.querySelectorAll('.project-card').length;
+  statEl.textContent = projectCount;
+  new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        let v = 0;
+        const step = projectCount / (1500 / 16);
+        const t = setInterval(() => {
+          v += step;
+          if (v >= projectCount) { statEl.textContent = projectCount; clearInterval(t); }
+          else { statEl.textContent = Math.floor(v); }
+        }, 16);
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.5 }).observe(statEl);
+
+  // Scroll to top button
+  window.addEventListener('scroll', function() {
+    document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 300);
+  });
+</script>
+</body>
+</html>
